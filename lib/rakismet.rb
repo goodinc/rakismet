@@ -59,8 +59,10 @@ module Rakismet
           param = v.class < String ? v.to_str : v.to_s # for ActiveSupport::SafeBuffer and Nil, respectively
           "#{k}=#{CGI.escape(param)}"
         end
+        Rails.logger.info "Akismet request: #{akismet.path}#{params.join('&')}"
         http.post(akismet.path, params.join('&'), Rakismet.headers)
       end
+      Rails.logger.info "Akismet response: #{response.body}"
       response.body
     end
 
